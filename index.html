@@ -18,6 +18,7 @@
     --eq:       #22c55e;
     --opt:      #a78bfa;
     --jnl:      #f59e0b;
+    --chk:      #f472b6;
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -105,8 +106,8 @@
     border: 1px solid currentColor;
   }
 
-  #session-badge.open    { color: var(--eq); border-color: var(--eq); background: #22c55e12; }
-  #session-badge.pre     { color: var(--fx); border-color: var(--fx); background: #00d4ff12; }
+  #session-badge.open    { color: var(--eq);  border-color: var(--eq);  background: #22c55e12; }
+  #session-badge.pre     { color: var(--fx);  border-color: var(--fx);  background: #00d4ff12; }
   #session-badge.after   { color: var(--opt); border-color: var(--opt); background: #a78bfa12; }
   #session-badge.closed  { color: var(--muted); border-color: var(--dim); background: transparent; }
 
@@ -220,7 +221,7 @@
     border: 1px solid;
   }
 
-  .status-badge.live  { color: var(--eq); border-color: var(--eq); background: #22c55e12; }
+  .status-badge.live  { color: var(--eq);  border-color: var(--eq);  background: #22c55e12; }
   .status-badge.ext   { color: var(--jnl); border-color: var(--jnl); background: #f59e0b12; }
   .status-badge.soon  { color: var(--muted); border-color: var(--dim); background: transparent; }
 
@@ -237,6 +238,7 @@
   .tile-eq  { --t: var(--eq); }
   .tile-opt { --t: var(--opt); }
   .tile-jnl { --t: var(--jnl); }
+  .tile-chk { --t: var(--chk); }
 
   /* ── FOOTER ── */
   footer {
@@ -295,7 +297,7 @@
       <div class="tile-icon">📈</div>
       <div class="tile-name">Equities Brief</div>
       <div class="tile-sub">Market Intelligence</div>
-      <div class="tile-desc">SPY · QQQ · VIX · AAPL · WMT · INTC · VZ · T · ONDS — regime, key levels, options flow, VIX term structure, conviction scores.</div>
+      <div class="tile-desc">SPY · QQQ · VIX · AAPL · NVDA · WMT · INTC · VZ · T · ONDS — regime, key levels, options flow, VIX term structure, conviction scores.</div>
       <div class="tile-footer">
         <span class="status-badge live">Live</span>
         <span class="tile-arrow">↗</span>
@@ -308,6 +310,18 @@
       <div class="tile-name">Options Calculator</div>
       <div class="tile-sub">Pre-Trade Analysis</div>
       <div class="tile-desc">Black-Scholes fair value · Greeks · P&amp;L diagram · expected move · probability of profit · break-even. No API key required.</div>
+      <div class="tile-footer">
+        <span class="status-badge live">Live</span>
+        <span class="tile-arrow">↗</span>
+      </div>
+    </a>
+
+    <!-- Pre-Trade Checklist -->
+    <a class="tile tile-chk" href="https://cbell0920.github.io/pre-trade-checklist" target="_blank" rel="noopener">
+      <div class="tile-icon">✅</div>
+      <div class="tile-name">Pre-Trade Checklist</div>
+      <div class="tile-sub">Trade Discipline</div>
+      <div class="tile-desc">Swing &amp; day trade modes · M/W/D HTF alignment · pullback + pattern confirmation · R:R check · position sizing · Go / No-Go verdict.</div>
       <div class="tile-footer">
         <span class="status-badge live">Live</span>
         <span class="tile-arrow">↗</span>
