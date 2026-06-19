@@ -4,386 +4,307 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TPTraders Intelligence Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg:       #0a0e1a;
-    --surface:  #111827;
-    --border:   #1e2a3a;
-    --text:     #e2e8f0;
-    --muted:    #64748b;
-    --dim:      #334155;
+:root{
+  --bg0:#0a0b0d;--bg1:#0f1114;--bg2:#151820;--bg3:#1c2030;
+  --text0:#e8eaf0;--text1:#c8cad4;--text2:#8892a4;--text3:#455060;
+  --border:rgba(255,255,255,0.055);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{min-height:100%;background:var(--bg0);color:var(--text0);font-family:'IBM Plex Sans',sans-serif;}
 
-    /* tool accents */
-    --fx:       #00d4ff;
-    --eq:       #22c55e;
-    --opt:      #a78bfa;
-    --jnl:      #f59e0b;
-    --chk:      #f472b6;
-  }
+/* ── TOPBAR ── */
+#topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 24px;height:48px;
+  background:var(--bg1);border-bottom:1px solid var(--border);
+  position:fixed;top:0;left:0;right:0;z-index:100;
+}
+.logo{
+  font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;
+  letter-spacing:0.2em;color:var(--text0);
+}
+.logo em{color:var(--text3);font-style:normal;font-weight:400;}
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* ── SESSION CLOCK ── */
+#session-clock{
+  display:flex;align-items:center;gap:10px;
+  font-family:'IBM Plex Mono',monospace;font-size:10px;
+}
+.session-badge{
+  padding:3px 10px;border-radius:2px;font-weight:700;
+  letter-spacing:0.1em;font-size:9px;
+}
+.session-badge.open  {background:rgba(34,197,94,0.15); color:#22c55e;border:1px solid rgba(34,197,94,0.25);}
+.session-badge.pre   {background:rgba(245,158,11,0.15);color:#f59e0b;border:1px solid rgba(245,158,11,0.25);}
+.session-badge.after {background:rgba(59,130,246,0.15);color:#3b82f6;border:1px solid rgba(59,130,246,0.25);}
+.session-badge.closed{background:rgba(255,255,255,0.05);color:var(--text3);border:1px solid var(--border);}
+#clock-time{color:var(--text2);font-size:10px;}
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
+/* ── PAGE ── */
+#page{max-width:1100px;margin:0 auto;padding:72px 24px 64px;}
 
-  /* ── HEADER ── */
-  header {
-    padding: 20px 32px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid var(--border);
-    position: sticky;
-    top: 0;
-    background: rgba(10, 14, 26, 0.92);
-    backdrop-filter: blur(8px);
-    z-index: 10;
-  }
+/* ── HERO ── */
+.hero{text-align:center;padding:40px 0 48px;}
+.hero-title{
+  font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;
+  letter-spacing:0.35em;text-transform:uppercase;color:var(--text3);
+  margin-bottom:14px;
+}
+.hero-name{
+  font-family:'IBM Plex Mono',monospace;font-size:28px;font-weight:700;
+  color:var(--text0);letter-spacing:0.05em;margin-bottom:8px;
+}
+.hero-name span{color:var(--text3);font-weight:300;}
+.hero-sub{font-size:13px;color:var(--text2);letter-spacing:0.02em;}
 
-  .logo {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
+/* ── GRID ── */
+.tile-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+  gap:16px;
+}
 
-  .logo-mark {
-    width: 36px;
-    height: 36px;
-    border-radius: 8px;
-    background: linear-gradient(135deg, #00d4ff22, #a78bfa22);
-    border: 1px solid #00d4ff44;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    font-weight: 800;
-    color: var(--fx);
-    letter-spacing: -1px;
-  }
+/* ── TILE ── */
+.tile{
+  --t:#ffffff;
+  display:block;text-decoration:none;
+  background:var(--bg1);
+  border:1px solid var(--border);
+  border-radius:6px;
+  padding:0;
+  overflow:hidden;
+  transition:transform 0.18s, border-color 0.18s, box-shadow 0.18s;
+  position:relative;
+}
+.tile:hover{
+  transform:translateY(-3px);
+  border-color:var(--t);
+  box-shadow:0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px var(--t) inset;
+}
+.tile-top{
+  height:3px;
+  background:var(--t);
+  opacity:0.8;
+  transition:opacity 0.18s;
+}
+.tile:hover .tile-top{opacity:1;}
 
-  .logo-text {
-    display: flex;
-    flex-direction: column;
-    line-height: 1.1;
-  }
+.tile-body{padding:22px 22px 16px;}
+.tile-icon{font-size:26px;margin-bottom:12px;display:block;line-height:1;}
+.tile-name{
+  font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:700;
+  color:var(--t);letter-spacing:0.04em;margin-bottom:4px;
+}
+.tile-sub{
+  font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;
+  letter-spacing:0.2em;text-transform:uppercase;color:var(--text3);
+  margin-bottom:12px;
+}
+.tile-desc{font-size:12px;color:var(--text2);line-height:1.65;}
 
-  .logo-text .brand {
-    font-size: 17px;
-    font-weight: 700;
-    color: var(--text);
-    letter-spacing: 0.02em;
-  }
+.tile-footer{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 22px;
+  border-top:1px solid var(--border);
+  margin-top:16px;
+}
+.tile-status{
+  font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:700;
+  letter-spacing:0.15em;padding:3px 8px;border-radius:2px;
+}
+.status-live{color:#22c55e;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2);}
+.status-ext {color:#3b82f6;background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.2);}
+.tile-arrow{
+  font-family:'IBM Plex Mono',monospace;font-size:14px;
+  color:var(--text3);transition:color 0.18s,transform 0.18s;
+}
+.tile:hover .tile-arrow{color:var(--t);transform:translateX(3px);}
 
-  .logo-text .sub {
-    font-size: 11px;
-    color: var(--muted);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
+/* ── SECTION LABEL ── */
+.section-label{
+  font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:700;
+  letter-spacing:0.28em;text-transform:uppercase;color:var(--text3);
+  margin-bottom:14px;margin-top:8px;
+  display:flex;align-items:center;gap:12px;
+}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border);}
 
-  /* ── SESSION CLOCK ── */
-  #timebar {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 13px;
-    color: var(--muted);
-  }
-
-  #session-badge {
-    padding: 3px 10px;
-    border-radius: 99px;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    border: 1px solid currentColor;
-  }
-
-  #session-badge.open    { color: var(--eq);  border-color: var(--eq);  background: #22c55e12; }
-  #session-badge.pre     { color: var(--fx);  border-color: var(--fx);  background: #00d4ff12; }
-  #session-badge.after   { color: var(--opt); border-color: var(--opt); background: #a78bfa12; }
-  #session-badge.closed  { color: var(--muted); border-color: var(--dim); background: transparent; }
-
-  #clock-time { font-variant-numeric: tabular-nums; font-weight: 500; }
-
-  /* ── MAIN ── */
-  main {
-    flex: 1;
-    padding: 40px 32px 64px;
-    max-width: 1200px;
-    margin: 0 auto;
-    width: 100%;
-  }
-
-  .section-label {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  /* ── TILE GRID ── */
-  .tile-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 20px;
-  }
-
-  .tile {
-    display: flex;
-    flex-direction: column;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 24px;
-    text-decoration: none;
-    color: var(--text);
-    position: relative;
-    overflow: hidden;
-    transition: border-color 0.2s, transform 0.15s, box-shadow 0.2s;
-    cursor: pointer;
-  }
-
-  .tile::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse at top left, color-mix(in srgb, var(--t) 8%, transparent), transparent 60%);
-    pointer-events: none;
-    transition: opacity 0.2s;
-    opacity: 0;
-  }
-
-  .tile:hover {
-    border-color: var(--t);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 32px color-mix(in srgb, var(--t) 15%, transparent);
-  }
-
-  .tile:hover::before { opacity: 1; }
-
-  .tile-icon {
-    font-size: 28px;
-    margin-bottom: 16px;
-    line-height: 1;
-  }
-
-  .tile-name {
-    font-size: 17px;
-    font-weight: 700;
-    color: var(--text);
-    margin-bottom: 2px;
-  }
-
-  .tile-sub {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--t);
-    margin-bottom: 12px;
-  }
-
-  .tile-desc {
-    font-size: 13px;
-    color: var(--muted);
-    line-height: 1.6;
-    flex: 1;
-  }
-
-  .tile-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 20px;
-    padding-top: 16px;
-    border-top: 1px solid var(--border);
-  }
-
-  .status-badge {
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    padding: 3px 8px;
-    border-radius: 99px;
-    border: 1px solid;
-  }
-
-  .status-badge.live  { color: var(--eq);  border-color: var(--eq);  background: #22c55e12; }
-  .status-badge.ext   { color: var(--jnl); border-color: var(--jnl); background: #f59e0b12; }
-  .status-badge.soon  { color: var(--muted); border-color: var(--dim); background: transparent; }
-
-  .tile-arrow {
-    color: var(--t);
-    font-size: 18px;
-    transition: transform 0.2s;
-  }
-
-  .tile:hover .tile-arrow { transform: translate(3px, -3px); }
-
-  /* tile accent themes */
-  .tile-fx  { --t: var(--fx); }
-  .tile-eq  { --t: var(--eq); }
-  .tile-opt { --t: var(--opt); }
-  .tile-jnl { --t: var(--jnl); }
-  .tile-chk { --t: var(--chk); }
-
-  /* ── FOOTER ── */
-  footer {
-    text-align: center;
-    padding: 20px 32px;
-    border-top: 1px solid var(--border);
-    font-size: 12px;
-    color: var(--muted);
-    letter-spacing: 0.03em;
-  }
-
-  /* ── RESPONSIVE ── */
-  @media (max-width: 600px) {
-    header { padding: 16px 20px; }
-    main   { padding: 28px 20px 48px; }
-    #timebar .label { display: none; }
-  }
+/* ── FOOTER ── */
+#footer{
+  text-align:center;padding:32px 24px;
+  font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text3);
+  letter-spacing:0.1em;border-top:1px solid var(--border);margin-top:48px;
+}
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
-<header>
-  <div class="logo">
-    <div class="logo-mark">TP</div>
-    <div class="logo-text">
-      <span class="brand">TPTraders</span>
-      <span class="sub">Intelligence Hub</span>
-    </div>
-  </div>
-  <div id="timebar">
-    <span id="session-badge" class="closed">Closed</span>
-    <span id="clock-time">--:-- -- ET</span>
+<!-- TOPBAR -->
+<header id="topbar">
+  <div class="logo">TP<em>/</em>TRADERS</div>
+  <div id="session-clock">
+    <span id="session-badge" class="session-badge closed">CLOSED</span>
+    <span id="clock-time">--:-- ET</span>
   </div>
 </header>
 
-<!-- MAIN -->
-<main>
-  <div class="section-label">Tools &amp; Dashboards</div>
-  <div class="tile-grid">
+<div id="page">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-title">TPTraders</div>
+    <div class="hero-name">Intelligence <span>Hub</span></div>
+    <div class="hero-sub">Your daily trading toolkit — one place, one click</div>
+  </div>
+
+  <!-- MORNING BRIEFS -->
+  <div class="section-label">Morning Briefs</div>
+  <div class="tile-grid" style="margin-bottom:32px;">
 
     <!-- FX Morning Brief -->
-    <a class="tile tile-fx" href="https://cbell0920.github.io/forex-brief" target="_blank" rel="noopener">
-      <div class="tile-icon">🌐</div>
-      <div class="tile-name">FX Morning Brief</div>
-      <div class="tile-sub">Forex Intelligence</div>
-      <div class="tile-desc">8 currencies · 28 pairs · macro regime · COT positioning · central bank stance · currency strength ranking · economic calendar.</div>
+    <a class="tile" style="--t:#00d4ff" href="https://cbell0920.github.io/forex-brief" target="_blank">
+      <div class="tile-top"></div>
+      <div class="tile-body">
+        <span class="tile-icon">💱</span>
+        <div class="tile-name">FX Morning Brief</div>
+        <div class="tile-sub">8 Currencies · 28 Pairs</div>
+        <div class="tile-desc">Macro regime, central bank stances, COT positioning, currency strength ranking, 28-pair conviction matrix, and senior analyst note.</div>
+      </div>
       <div class="tile-footer">
-        <span class="status-badge live">Live</span>
-        <span class="tile-arrow">↗</span>
+        <span class="tile-status status-live">● LIVE</span>
+        <span class="tile-arrow">→</span>
       </div>
     </a>
 
-    <!-- Equities Morning Brief -->
-    <a class="tile tile-eq" href="https://cbell0920.github.io/equities-brief" target="_blank" rel="noopener">
-      <div class="tile-icon">📈</div>
-      <div class="tile-name">Equities Brief</div>
-      <div class="tile-sub">Market Intelligence</div>
-      <div class="tile-desc">SPY · QQQ · VIX · AAPL · NVDA · WMT · INTC · VZ · T · ONDS — regime, key levels, options flow, VIX term structure, conviction scores.</div>
+    <!-- Equities Brief -->
+    <a class="tile" style="--t:#22c55e" href="https://cbell0920.github.io/equities-brief" target="_blank">
+      <div class="tile-top"></div>
+      <div class="tile-body">
+        <span class="tile-icon">📈</span>
+        <div class="tile-name">Equities Brief</div>
+        <div class="tile-sub">Watchlist · Conviction Scores</div>
+        <div class="tile-desc">Per-ticker pre-market pricing, signal, key levels, VIX term structure, sector rotation, options flow, earnings calendar, and analyst note.</div>
+      </div>
       <div class="tile-footer">
-        <span class="status-badge live">Live</span>
-        <span class="tile-arrow">↗</span>
+        <span class="tile-status status-live">● LIVE</span>
+        <span class="tile-arrow">→</span>
       </div>
     </a>
+
+    <!-- Market Breadth -->
+    <a class="tile" style="--t:#f97316" href="https://cbell0920.github.io/market-breadth" target="_blank">
+      <div class="tile-top"></div>
+      <div class="tile-body">
+        <span class="tile-icon">🌐</span>
+        <div class="tile-name">Market Breadth</div>
+        <div class="tile-sub">Macro Sentiment · Session Tone</div>
+        <div class="tile-desc">Futures (NQ, ES, YM, RTY), DXY, VIX, commodities (GLD, OIL, copper), yields, put/call ratio, and overall RISK-ON / RISK-OFF verdict.</div>
+      </div>
+      <div class="tile-footer">
+        <span class="tile-status status-live">● LIVE</span>
+        <span class="tile-arrow">→</span>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- TRADE TOOLS -->
+  <div class="section-label">Trade Tools</div>
+  <div class="tile-grid">
 
     <!-- Options Calculator -->
-    <a class="tile tile-opt" href="https://cbell0920.github.io/options-calculator" target="_blank" rel="noopener">
-      <div class="tile-icon">⚡</div>
-      <div class="tile-name">Options Calculator</div>
-      <div class="tile-sub">Pre-Trade Analysis</div>
-      <div class="tile-desc">Black-Scholes fair value · Greeks · P&amp;L diagram · expected move · probability of profit · break-even. No API key required.</div>
+    <a class="tile" style="--t:#a78bfa" href="https://cbell0920.github.io/options-calculator" target="_blank">
+      <div class="tile-top"></div>
+      <div class="tile-body">
+        <span class="tile-icon">⚙️</span>
+        <div class="tile-name">Options Calculator</div>
+        <div class="tile-sub">Black-Scholes · Greeks · P&amp;L</div>
+        <div class="tile-desc">Fair value pricing, all five Greeks, P&amp;L diagram, expected move, probability of profit, and break-even. No API key required.</div>
+      </div>
       <div class="tile-footer">
-        <span class="status-badge live">Live</span>
-        <span class="tile-arrow">↗</span>
+        <span class="tile-status status-live">● LIVE</span>
+        <span class="tile-arrow">→</span>
       </div>
     </a>
 
     <!-- Pre-Trade Checklist -->
-    <a class="tile tile-chk" href="https://cbell0920.github.io/pre-trade-checklist" target="_blank" rel="noopener">
-      <div class="tile-icon">✅</div>
-      <div class="tile-name">Pre-Trade Checklist</div>
-      <div class="tile-sub">Trade Discipline</div>
-      <div class="tile-desc">Swing &amp; day trade modes · M/W/D HTF alignment · pullback + pattern confirmation · R:R check · position sizing · Go / No-Go verdict.</div>
+    <a class="tile" style="--t:#f59e0b" href="https://cbell0920.github.io/pre-trade-checklist" target="_blank">
+      <div class="tile-top"></div>
+      <div class="tile-body">
+        <span class="tile-icon">✅</span>
+        <div class="tile-name">Pre-Trade Checklist</div>
+        <div class="tile-sub">Swing · Day Trade · GO / NO-GO</div>
+        <div class="tile-desc">Structured trade validation — HTF context, entry confirmation, risk management checks, position sizing, and conviction score before every entry.</div>
+      </div>
       <div class="tile-footer">
-        <span class="status-badge live">Live</span>
-        <span class="tile-arrow">↗</span>
+        <span class="tile-status status-live">● LIVE</span>
+        <span class="tile-arrow">→</span>
       </div>
     </a>
 
-    <!-- Trading Journal -->
-    <a class="tile tile-jnl" href="https://tptraders.vercel.app" target="_blank" rel="noopener">
-      <div class="tile-icon">📓</div>
-      <div class="tile-name">Trading Journal</div>
-      <div class="tile-sub">Trade Log · Login Required</div>
-      <div class="tile-desc">Log trades, track setups, review performance. Hosted on Vercel — login required to access your journal.</div>
+    <!-- Journal -->
+    <a class="tile" style="--t:#e879f9" href="https://tptraders.vercel.app" target="_blank">
+      <div class="tile-top"></div>
+      <div class="tile-body">
+        <span class="tile-icon">📓</span>
+        <div class="tile-name">Trading Journal</div>
+        <div class="tile-sub">Login Required · Vercel</div>
+        <div class="tile-desc">Trade logging, post-review, and performance tracking. Login required. Planned: conviction scores from Equities Brief pre-populate trade entries.</div>
+      </div>
       <div class="tile-footer">
-        <span class="status-badge ext">External</span>
-        <span class="tile-arrow">↗</span>
+        <span class="tile-status status-ext">⬡ EXTERNAL</span>
+        <span class="tile-arrow">→</span>
       </div>
     </a>
 
   </div>
-</main>
+</div>
 
 <!-- FOOTER -->
-<footer>
-  TPTraders Intelligence Hub &nbsp;·&nbsp; All tools open in a new tab
-</footer>
+<div id="footer">
+  TPTRADERS · For informational purposes only · Not financial advice
+</div>
 
 <script>
-  // ── SESSION CLOCK (ET) ──
-  function updateClock() {
-    const now = new Date();
-    const et = new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' }));
-    const h = et.getHours(), m = et.getMinutes();
-    const day = et.getDay(); // 0=Sun, 6=Sat
+// ── SESSION CLOCK ──────────────────────────────────────────────────────────
+function updateClock(){
+  var now = new Date();
+  var et  = new Date(now.toLocaleString('en-US',{timeZone:'America/New_York'}));
+  var h   = et.getHours(), m = et.getMinutes(), day = et.getDay();
 
-    const hh = h % 12 || 12;
-    const mm = String(m).padStart(2, '0');
-    const ampm = h < 12 ? 'AM' : 'PM';
-    document.getElementById('clock-time').textContent = `${hh}:${mm} ${ampm} ET`;
+  var hh  = h.toString().padStart(2,'0');
+  var mm  = m.toString().padStart(2,'0');
+  document.getElementById('clock-time').textContent = hh+':'+mm+' ET';
 
-    const badge = document.getElementById('session-badge');
-    const mins = h * 60 + m;
+  var badge  = document.getElementById('session-badge');
+  var mins   = h*60+m;
+  var isWeekday = day>=1 && day<=5;
 
-    let label, cls;
-    if (day === 0 || day === 6) {
-      label = 'Weekend'; cls = 'closed';
-    } else if (mins >= 570 && mins < 960) {   // 9:30–16:00
-      label = 'Market Open'; cls = 'open';
-    } else if (mins >= 240 && mins < 570) {   // 4:00–9:30
-      label = 'Pre-Market'; cls = 'pre';
-    } else if (mins >= 960 && mins < 1200) {  // 16:00–20:00
-      label = 'After Hours'; cls = 'after';
-    } else {
-      label = 'Closed'; cls = 'closed';
-    }
-
-    badge.textContent = label;
-    badge.className = `status-badge ${cls}`;
+  var label, cls;
+  if(!isWeekday){
+    label='WEEKEND'; cls='closed';
+  } else if(mins >= 930 && mins < 960){   // 9:30–10:00 extended
+    label='OPEN'; cls='open';
+  } else if(mins >= 570 && mins < 570){   // placeholder
+    label='PRE-MARKET'; cls='pre';
+  } else if(mins >= 240 && mins < 570){   // 4:00–9:30 AM
+    label='PRE-MARKET'; cls='pre';
+  } else if(mins >= 570 && mins < 960){   // 9:30 AM–4:00 PM
+    label='MARKET OPEN'; cls='open';
+  } else if(mins >= 960 && mins < 1200){  // 4:00–8:00 PM
+    label='AFTER HOURS'; cls='after';
+  } else {
+    label='CLOSED'; cls='closed';
   }
 
-  updateClock();
-  setInterval(updateClock, 1000);
-</script>
+  badge.textContent = label;
+  badge.className   = 'session-badge '+cls;
+}
 
+updateClock();
+setInterval(updateClock, 1000);
+</script>
 </body>
 </html>
