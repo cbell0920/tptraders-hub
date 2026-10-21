@@ -58,6 +58,32 @@ html,body{min-height:100%;background:var(--bg0);color:var(--text0);font-family:'
 }
 .hero-name span{color:var(--text3);font-weight:300;}
 .hero-sub{font-size:13px;color:var(--text2);letter-spacing:0.02em;}
+.hero-greet{
+  font-family:'IBM Plex Mono',monospace;font-size:12px;color:#2dd4bf;
+  letter-spacing:0.08em;margin-bottom:18px;
+}
+.hero-intro{
+  max-width:620px;margin:18px auto 0;
+  font-size:14px;line-height:1.7;color:var(--text1);
+}
+
+/* ── START HERE ── */
+.steps{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:12px;margin-bottom:40px;
+}
+.step{
+  background:var(--bg1);border:1px solid var(--border);border-radius:6px;
+  padding:16px 18px;
+}
+.step-num{
+  font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;
+  letter-spacing:0.2em;color:#2dd4bf;margin-bottom:6px;
+}
+.step-title{font-size:14px;font-weight:600;color:var(--text0);margin-bottom:4px;}
+.step-desc{font-size:12px;line-height:1.6;color:var(--text2);}
+.step-desc a{color:#2dd4bf;text-decoration:none;}
+.step-desc a:hover{text-decoration:underline;}
 
 /* ── GRID ── */
 .tile-grid{
@@ -154,14 +180,36 @@ html,body{min-height:100%;background:var(--bg0);color:var(--text0);font-family:'
 
   <!-- HERO -->
   <div class="hero">
+    <div class="hero-greet" id="hero-greet">Welcome, trader</div>
     <div class="hero-title">TPTraders</div>
     <div class="hero-name">Intelligence <span>Hub</span></div>
     <div class="hero-sub">Your daily trading toolkit — one place, one click</div>
+    <p class="hero-intro">Glad you're here. Whether you're placing your first paper trade or reviewing your hundredth live one, everything the group uses lives on this page: the lessons, the tools, and the journal.</p>
   </div>
 
-  <!-- LEARN -->
-  <div class="section-label">Learn</div>
-  <div class="tile-grid" style="margin-bottom:32px;">
+  <!-- START HERE -->
+  <div class="section-label">Start Here</div>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">01 · LEARN</div>
+      <div class="step-title">Work through the modules</div>
+      <div class="step-desc">New to trading? Start with Module 1 in <a href="https://cbell0920.github.io/tptraders-learn">TPTraders Learn</a> and go in order. Already trading? Jump to the cheat sheet.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">02 · PRACTICE</div>
+      <div class="step-title">Paper trade first</div>
+      <div class="step-desc">Build the habits before real money is on the line. Follow your plan and log every trade.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">03 · REVIEW</div>
+      <div class="step-title">Journal and improve</div>
+      <div class="step-desc">Log trades in the <a href="https://tptraders.vercel.app" target="_blank">Trading Journal</a> and run the weekly review to see what's working.</div>
+    </div>
+  </div>
+
+  <!-- TOOLS -->
+  <div class="section-label">Tools</div>
+  <div class="tile-grid">
 
     <!-- Learn -->
     <a class="tile" style="--t:#2dd4bf" href="https://cbell0920.github.io/tptraders-learn">
@@ -170,19 +218,13 @@ html,body{min-height:100%;background:var(--bg0);color:var(--text0);font-family:'
         <span class="tile-icon">🎓</span>
         <div class="tile-name">TPTraders Learn</div>
         <div class="tile-sub">7 Modules · Cheat Sheet</div>
-        <div class="tile-desc">Trading the IOF way, from first order to weekly review: risk and sizing, stops and SCRAM, reading price, strategy testing, psychology, journaling, and the progression gates.</div>
+        <div class="tile-desc">The Trading MOPs explained, from first order to weekly review: risk and sizing, orders and SCRAM, zones and the scorecard, strategy testing, psychology, journaling, and the progression gates.</div>
       </div>
       <div class="tile-footer">
         <span class="tile-status status-live">● LIVE</span>
         <span class="tile-arrow">→</span>
       </div>
     </a>
-
-  </div>
-
-  <!-- TRADE TOOLS -->
-  <div class="section-label">Trade Tools</div>
-  <div class="tile-grid">
 
     <!-- Options Calculator -->
     <a class="tile" style="--t:#a78bfa" href="https://cbell0920.github.io/options-calculator" target="_blank">
@@ -260,6 +302,13 @@ function updateClock(){
 
 updateClock();
 setInterval(updateClock, 1000);
+
+// ── GREETING ───────────────────────────────────────────────────────────────
+(function(){
+  var h = new Date().getHours();
+  var part = h < 12 ? 'Good morning' : h < 18 ? 'Good afternoon' : 'Good evening';
+  document.getElementById('hero-greet').textContent = part + ', trader 👋';
+})();
 </script>
 </body>
 </html>
