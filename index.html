@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230d0f1a'/%3E%3Cpolygon points='9.78,5.60 15.50,8.90 15.50,15.50 9.78,18.80 4.07,15.50 4.07,8.90' fill='%23f5b942'/%3E%3Cpolygon points='22.22,5.60 27.93,8.90 27.93,15.50 22.22,18.80 16.50,15.50 16.50,8.90' fill='%23f5b942'/%3E%3Cpolygon points='16.00,16.40 21.72,19.70 21.72,26.30 16.00,29.60 10.28,26.30 10.28,19.70' fill='%23f5b942'/%3E%3C/svg%3E">
+<script>try{if(localStorage.getItem('hive-theme')==='light')document.documentElement.setAttribute('data-theme','light')}catch(e){}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Hive</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -12,6 +14,17 @@
   --hive:#f5b942;
   --mono:'IBM Plex Mono',ui-monospace,monospace;--sans:'IBM Plex Sans',system-ui,sans-serif;
 }
+/* light mode: dark is the default; the choice is shared with Learn via localStorage 'hive-theme' */
+:root[data-theme="light"]{
+  --bg:#f6f7f9;--panel:#ffffff;--panel2:#eef0f4;--border:#d9dde5;
+  --text:#111827;--text2:#4b5563;--muted:#8a94a6;--hive:#b7791f;
+}
+:root[data-theme="light"] .hx b{color:var(--text)}
+:root[data-theme="light"] .hx.soon{--c:#d9dde5}
+.theme-btn{font-family:var(--mono);font-size:11px;color:var(--text2);background:transparent;border:1px solid var(--border);padding:4px 10px;border-radius:6px;cursor:pointer}
+.theme-btn:hover{color:var(--hive);border-color:var(--hive)}
+.theme-btn .to-dark{display:none}
+:root[data-theme="light"] .theme-btn .to-light{display:none}:root[data-theme="light"] .theme-btn .to-dark{display:inline}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--sans)}
 a{color:inherit}
@@ -90,7 +103,7 @@ a.hx:hover::before,a.hx:focus-visible::before{background:var(--panel2)}
 <header id="top">
   <div class="bar">
     <div class="logo">THE<em>/</em>HIVE</div>
-    <div class="clock"><span id="badge" class="badge">CLOSED</span><span id="time">--:-- ET</span></div>
+    <div class="clock"><span id="badge" class="badge">CLOSED</span><span id="time">--:-- ET</span><button class="theme-btn" type="button" onclick="(function(){var r=document.documentElement,l=r.getAttribute('data-theme')!=='light';if(l)r.setAttribute('data-theme','light');else r.removeAttribute('data-theme');try{localStorage.setItem('hive-theme',l?'light':'dark')}catch(e){}})()"><span class="to-light">☀ Light</span><span class="to-dark">☾ Dark</span></button></div>
   </div>
 </header>
 
